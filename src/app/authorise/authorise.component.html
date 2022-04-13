@@ -1,3 +1,7 @@
 <p>Let's find my most used IG emojis in captions... </p>
 
-<button class="btn btn-primary" onClick()="getSomeContent()">Get Some Content</button>
+<button class="btn btn-primary" (click)="checkAuth()">Check Authorisation</button>
+
+<div *ngIf="authoriseFail">
+  {{ errorMessage }}
+</div>
