@@ -10,11 +10,11 @@ Run `npm start` to create a dev server locally. Navigate to `http://localhost:42
 
 ## Build
 
-Run `npm build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Run `npm run build` to build the project. The build artifacts will be stored in the `dist/` directory.
 
 ## Deploy 
 
-After building the project, run `npm deploy` to deploy the project to the associated GitHub pages static website: https://lolagarden.github.io/ig-connect/
+After building the project, run `npm run deploy` to deploy the project to the associated GitHub pages static website: https://lolagarden.github.io/ig-connect/
 
 ## Code scaffolding
 
