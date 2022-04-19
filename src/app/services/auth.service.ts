@@ -4,7 +4,7 @@ import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 @Injectable({
   providedIn: 'root'
 })
-export class RequestService {
+export class AuthService {
 
   constructor(private http: HttpClient) { }
 
@@ -12,7 +12,7 @@ export class RequestService {
   appId: string = '1448683805589247';
   redirectUrl: string = 'https://lolagarden.github.io/ig-connect/';
 
-  sendAuthorisedRequest(code: string) {
+  exchangeAuthCodeForToken(code: string) {
 
     console.log('code', code);
     let requestBody = {

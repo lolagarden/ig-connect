@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
-import {RequestService} from "../services/request.service";
+import {Component, Inject, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from "@angular/router";
+import { DOCUMENT } from '@angular/common';
+import {AuthService} from "../services/auth.service";
+
 
 @Component({
   selector: 'app-authorise',
@@ -9,7 +11,9 @@ import {RequestService} from "../services/request.service";
 })
 export class AuthoriseComponent implements OnInit {
 
-  constructor(private router: ActivatedRoute, private requestService: RequestService) { }
+  constructor(private router: ActivatedRoute,
+              private authService: AuthService,
+              @Inject(DOCUMENT) private document: Document) { }
   authCode: string = '';
   errorMessage: string = "Sorry, looks like authorisation failed. Please try again!";
   authoriseFail: boolean = false;
@@ -17,26 +21,29 @@ export class AuthoriseComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  checkAuth(): string {
+
+
+  sendRequest() {
     let queryParams = this.router.snapshot.queryParams;
-    if (Object.keys(queryParams).length !== 0)
+    if (Object.keys(queryParams).length !== 0 && queryParams['code'])
     {
-      console.log(queryParams);
-      this.authCode = queryParams['0'];
+      this.authCode = queryParams['code'];
       this.authoriseFail = false;
-      this.requestService.sendAuthorisedRequest(this.authCode);
-      return this.authCode; //this.trimToken(this.authCode)
-    }
-    else {
-      return this.errorMessage;
+      this.trimAuthCode(this.authCode);
+      this.authService.exchangeAuthCodeForToken(this.authCode);
     }
   }
 
-  trimToken(authCode: string): string {
+  trimAuthCode(authCode: string): string {
     let codeLength: number = authCode.length;
-    let trimmedCode = authCode.slice(0, codeLength-3);
-    console.log('trimmed: ', trimmedCode);
-    return trimmedCode;
+    console.log('lenb', authCode[codeLength - 1]);
+    if (authCode[codeLength - 1] === '_' && authCode[codeLength - 2] === '#')
+    {
+      let trimmedCode = authCode.slice(0, codeLength-3);
+      console.log('trimmed: ', trimmedCode);
+      return trimmedCode;
+    }
+    return authCode;
   }
 
 }
